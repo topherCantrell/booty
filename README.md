@@ -2,8 +2,10 @@
 
 Adding LED bling to the Vertiv HSV candy treasure chest.
 
-[CONSTRUCTION](CONSTRUCTION.md)
+Follow the [CONSTRUCTION](CONSTRUCTION.md) of the chest.
 
-<img src="art/05-mounted.jpg" width="400px">
+<img src="art/running.jpg" width="400px">
+
+## Schematics
 
 ![](art/schematic.jpg)
