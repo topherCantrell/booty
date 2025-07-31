@@ -30,11 +30,12 @@ class Grid:
 
     def clear(self):
         """Clear the grid by setting all pixel values to 0."""
-        self.buffer = bytearray(self.width * self.height)
+        self.fill(0)
 
     def fill(self, value):
         """Fill the grid with the specified value."""
-        self.buffer = bytearray([value] * (self.width * self.height))
+        for i in range(len(self.buffer)):
+            self.buffer[i] = value
 
     def draw_line(self, x1, y1, x2, y2, color):
         """Draw a line from (x1, y1) to (x2, y2) with the specified color."""

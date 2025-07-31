@@ -8,6 +8,10 @@ class Buttons:
     def __init__(self, hardware):
         self.hardware = hardware
         self._last_red, self._last_green, self._last_blue = hardware.get_buttons()
+        self._injected_press = None
+
+    def inject_press(self, color):        
+        self._injected_press = color
 
     async def wait_no_button(self):
         """ Wait until no buttons are pressed. """
@@ -26,6 +30,13 @@ class Buttons:
         Args:
             t: Time to wait in seconds (float) 
         """
+        if self._injected_press:
+            print(">>>> Injected button press:", self._injected_press)
+            # If a button press was injected, use it.
+            color = self._injected_press
+            self._injected_press = None
+            raise ButtonPressedAbort(color)                
+        
         t = int(t*10)  # whole number of 100ths of a second
         while True:
             v_red, v_green, v_blue = self.hardware.get_buttons()

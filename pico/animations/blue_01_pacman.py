@@ -3,25 +3,24 @@ from grid import Grid
 
 import ascii_art
 
+lines = ascii_art.load_art_lines('/animations/sprites.txt')
+img = ascii_art.make_images(lines)
+
+ghosts_width = img['GHOSTS']['width']
+ghosts_height = img['GHOSTS']['height']
+ghosts_images = img['GHOSTS']['images']
+
+pac_width = img['PACMAN']['width']
+pac_height = img['PACMAN']['height']
+pac_images = img['PACMAN']['images']
+
+grid = Grid(29,24)
+
 async def run_task(hard, bts):
 
     fr = Frame(hard)
     fr.set_color(8,(0, 0, 10)) # Scared ghost body
     fr.set_color(9,(10, 0, 0)) # Scared ghost eyes
-
-    grid = Grid(29,24)
-
-    lines = ascii_art.load_art_lines('/animations/sprites.txt')
-    img = ascii_art.make_images(lines)
-
-    ghosts_width = img['GHOSTS']['width']
-    ghosts_height = img['GHOSTS']['height']
-    ghosts_images = img['GHOSTS']['images']
-    
-    pac_width = img['PACMAN']['width']
-    pac_height = img['PACMAN']['height']
-    pac_images = img['PACMAN']['images']
-
     
     # Left to right
     ghosts = [2,3] # ghost facing right (2 animations)

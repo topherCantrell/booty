@@ -63,15 +63,20 @@ async def chest_task(hard, bts):
         animation = animations[current_color][current_position]
         print(f"{current_color} {current_position} {animation['name']} running...")
         try:
-            # Run the animation task until it completes or a button is pressed.
-            await animation['task'](hard, bts)
+            # Run the animation task until it completes or a button is pressed.            
+            await animation['task'](hard, bts)            
             # Advance to the next animation
-            current_position += 1
+            current_position += 1            
+            await asyncio.sleep(1)  # Short pause to let other tasks run
         except buttons.ButtonPressedAbort as e:
             e = str(e)
+            print(f"Button pressed: {e}")
             if e == current_color:
                 # Advance to the next animation in the current color set
                 current_position += 1
+                if current_position >= len(animations[current_color]):
+                    # Stay within the same color set                    
+                    current_position = 0
             else:
                 # Advance to the next color set
                 current_color = e
@@ -84,7 +89,7 @@ hard = Hardware()
 bts = buttons.Buttons(hard)
 
 # Create the web server and buttons objects.
-web_server = WebServer()
+web_server = WebServer(bts)
 
 # Two tasks: one for the web server and one for the chest animations.
 asyncio.run(asyncio.gather(web_server.run_task(), chest_task(hard, bts)))
