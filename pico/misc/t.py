@@ -83,12 +83,8 @@ def to_data(s):
         pos += 1
     return ret
 
-hard = Hardware(using_dev=True, simulate_chest=True)
+hard = Hardware()
 f = frame.Frame(hard)
 
-data = to_data(weavers.test_29x24)
+data = to_data(test_29x24)
 f.show(data)
-
-while True:
-    print(">>>",hard.get_buttons())
-    time.sleep(1)

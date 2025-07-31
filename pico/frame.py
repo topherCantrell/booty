@@ -27,17 +27,10 @@ class Frame:
             hardware: configured instance of Hardware that provides access to the NeoPixel strips.
         """
         self.hardware = hardware
-
-        # The panel is built from three separate strips
-        self.neo1, self.neo2, self.neo3 = hardware.get_neos()
-
+        
         self.color_palette = [(0,0,2)] * 256  # Make space for 256 colors
         for i in range(len(DEFAULT_COLORS)):
-            self.color_palette[i] = DEFAULT_COLORS[i]
-
-        self.cache_neo1 = None
-        self.cache_neo2 = None
-        self.cache_neo3 = None
+            self.color_palette[i] = DEFAULT_COLORS[i]        
 
     def set_color(self, index, color):
         """ Set the RGB color value for one of the 256 colors in the palette."""
@@ -45,7 +38,7 @@ class Frame:
 
     def get_color(self, index):
         """ Get the RGB color value for one of the 256 colors in the palette."""
-        return self.color_palette[index]
+        return self.color_palette[index]    
     
     def show(self, grid):
         """ Draw the 2D image onto the three neo strips.
@@ -53,17 +46,21 @@ class Frame:
         The incoming image is a bytearray or any object with a buffer
         that is a bytearray (like the Grid class in this library).
         """
+        # TODO pull all these method calls inline for speed
         # We can work with bytearrays or anything that has a bytearray
         if hasattr(grid, 'buffer'):                
-            grid = grid.buffer        
-        s1, s2, s3 = self.hardware.weaver(grid, self.cache_neo1, self.cache_neo2, self.cache_neo3)
-        if self.cache_neo1 is None:
-            # The data isn't important in the cache, just the size and space
-            self.cache_neo1 = s1
-            self.cache_neo2 = s2
-            self.cache_neo3 = s3
-        self.show_strips(s1, s2, s3)
-
+            grid = grid.buffer
+        width = self.hardware.width        
+        y = 0
+        while y < 24:
+            x = 0
+            while x < width:
+                strip, index = self.hardware.map_coordinates(x, y)
+                color_index = grid[y * width + x]
+                strip[index] = self.color_palette[color_index]                
+                x += 1
+            y += 1
+        self.hardware.show()
 
     def show_strips(self, s1, s2, s3):
         """Draw the woven image (three pixel arrays) onto the the three neo strips.
@@ -71,10 +68,8 @@ class Frame:
         This skips the weaving if you already have the data prepared.
         """
 
-        # Chase the pointers into local variables for faster access        
-        n1 = self.neo1
-        n2 = self.neo2
-        n3 = self.neo3
+        # Chase the pointers into local variables for faster access  
+        n1, n2, n3 = self.hardware.neos              
         pal = self.color_palette
 
         # WHILE loops are faster than range iteration -- when every
