@@ -26,12 +26,12 @@ I tested the individual panels before installing them.
 
 <img src="art/04-test.jpg" width="500px">
 
-I mounted the panel to the lid. The holds itself in surprisingly well, but I added small wooden
+I mounted the panel to the lid. The springy panel holds itself in surprisingly well, but I added small wooden
 dowels in the corners to secure it. Thus, the panel is removable for repairs.
 
 <img src="art/05-mounted.jpg" width="500px">
 
-Neopixels need diffusion to soften their brightness. I had some white stick on sheets from other 
+Neopixels need diffusion to soften their brightness. I had some white stick-on sheets from other 
 projects. I carefully cut the sheets to size, peeled the backing, and stuck them right on the panels.
 
 <img src="art/06-diffuser.jpg" width="500px">
